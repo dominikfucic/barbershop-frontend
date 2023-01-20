@@ -9,6 +9,12 @@ export const FormStyle = styled.form`
   box-shadow: 0 0 10px #ccc;
 `;
 
+export const FormGroup = styled.div`
+  span:last-child {
+    margin-bottom:14px;
+  }
+`;
+
 export const FormFieldLabel = styled.label`
   font-size: 14px;
   font-weight: bold;
@@ -19,16 +25,14 @@ export const FormFieldLabel = styled.label`
 export const FormFieldInput = styled.input`
   width: 100%;
   padding: 12px;
-  margin-bottom: ${({ errors }: { errors: boolean }) => (errors ? 0 : "20px")};
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
+  margin-bottom: ${({ errors }: { errors: string[] }) => (errors.length > 0 ? 0 : "20px")};
 `;
 
 export const FormError = styled.span`
-  margin-top: 4px;
-  margin-bottom: 14px;
   display: block;
   font-size: small;
   color: red;

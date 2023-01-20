@@ -1,25 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Form, { FormField } from "../components/Form/Form";
 import {
   FormButton,
   FormButtonContainer,
+  FormGroup,
   FormTitle,
 } from "../components/Form/Form.styled";
+import { FormContext } from "../components/Form/FormProvider";
+import {
+  emailValidator,
+  passwordValidator,
+  repeatPasswordValidator,
+  requiredValidator,
+} from "../components/Form/Validators";
 
 function SignUp() {
   const navigate = useNavigate();
+  const formContext = React.useContext(FormContext)!;
+  const { setFormState } = formContext;
+
+  useEffect(() => {
+    return () => {
+      setFormState((state) => {
+        return {
+          ...state,
+          data: {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            repeatPassword: "",
+          },
+          errors: {},
+          validators: {},
+        };
+      });
+    };
+  }, []);
   return (
     <Form>
       <FormTitle>Sign Up</FormTitle>
-      <FormField type="text" name="firstName" label="First Name:" />
-      <FormField type="text" name="lastName" label="Last Name:" />
-      <FormField type="email" name="email" label="Email:" />
-      <FormField type="password" name="password" label="Password:" />
+      <FormField
+        type="text"
+        name="firstName"
+        label="First Name:"
+        validators={[requiredValidator]}
+      />
+      <FormField
+        type="text"
+        name="lastName"
+        label="Last Name:"
+        validators={[requiredValidator]}
+      />
+      <FormField
+        type="email"
+        name="email"
+        label="Email:"
+        validators={[requiredValidator, emailValidator]}
+      />
+      <FormField
+        type="password"
+        name="password"
+        label="Password:"
+        validators={[requiredValidator, passwordValidator]}
+      />
       <FormField
         type="password"
         name="repeatPassword"
         label="Repeat Password:"
+        validators={[requiredValidator, repeatPasswordValidator]}
       />
       <FormButtonContainer>
         <FormButton

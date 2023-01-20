@@ -4,34 +4,43 @@ import {
   FormError,
   FormFieldInput,
   FormFieldLabel,
+  FormGroup,
   FormStyle,
 } from "./Form.styled";
 import { FormContext } from "./FormProvider";
 
 export const FormField = (props: FormFieldProps) => {
   const formContext = React.useContext(FormContext)!;
-  const { handleChange, formState } = formContext;
+  const { handleChange, formState, setFormState } = formContext;
+
+  const { data, errors } = formState;
+
+  React.useEffect(() => {
+    setFormState((state) => {
+      return {
+        ...state,
+        validators: {
+          ...state.validators,
+          [props.name]: props.validators,
+        },
+      };
+    });
+  }, []);
 
   return (
-    <>
+    <FormGroup>
       <FormFieldLabel>{props.label}</FormFieldLabel>
       <FormFieldInput
         type={props.type}
         name={props.name}
         onChange={handleChange}
-        value={formState.data[props.name as keyof FormStateData]}
-        errors={
-          formState.errors![props.name as keyof FormStateErrors]!.length > 0
-            ? true
-            : false
-        }
+        value={data[props.name as keyof FormStateData]}
+        errors={errors?.[props.name as keyof FormStateErrors] ?? []}
       />
-      {formState.errors![props.name as keyof FormStateErrors]!.length > 0 && (
-        <FormError>
-          {formState.errors![props.name as keyof FormStateErrors]!.join(", ")}
-        </FormError>
-      )}
-    </>
+      {errors![props.name as keyof FormStateErrors]?.map((error) => (
+        <FormError>{error}</FormError>
+      ))}
+    </FormGroup>
   );
 };
 

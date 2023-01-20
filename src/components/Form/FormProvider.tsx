@@ -17,92 +17,51 @@ export default function FormProvider({
       password: "",
       repeatPassword: "",
     },
-    errors: {
-      firstName: [],
-      lastName: [],
-      email: [],
-      password: [],
-      repeatPassword: [],
-    },
+    errors: {},
   });
 
-  const validators = {
-    firstName: (value: string) => {
-      if (!value) {
-        return "First name is required";
-      }
-      return "";
-    },
-    lastName: (value: string) => {
-      if (!value) {
-        return "Last name is required";
-      }
-      return "";
-    },
-    email: (value: string) => {
-      if (!value) {
-        return "Email is required";
-      }
-      if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)) {
-        return "Invalid email address";
-      }
-      return "";
-    },
-    password: (value: string) => {
-      if (!value) {
-        return "Password is required";
-      }
-      if (value.length < 8) {
-        return "Password must be at least 8 characters";
-      }
-      return "";
-    },
-    repeatPassword: (value: string) => {
-      if (!value) {
-        return "Password is required";
-      }
-      if (formState.data.password !== value) {
-        return "Passwords must match";
-      }
-      return "";
-    },
-  };
-
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const { value, name } = event.target;
     setFormState({
       ...formState,
       data: {
         ...formState.data,
-        [event.target.name]: event.target.value,
+        [name]: value,
       },
       errors: {
         ...formState.errors,
-        [event.target.name]: [],
+        [name]: [],
       },
     });
   }
+  // as keyof FormStateData]
 
   const validate = () => {
-    const newErrors = {
-      firstName: [] as string[],
-      lastName: [] as string[],
-      email: [] as string[],
-      password: [] as string[],
-      repeatPassword: [] as string[],
-    };
-    Object.keys(validators).forEach((field) => {
-      const error = validators[field as keyof typeof validators](
-        formState.data[field as keyof FormStateData]
-      );
-      if (error) {
-        newErrors[field as keyof typeof newErrors].push(error);
+    const { data, validators } = formState;
+    const newErrors = {} as FormStateErrors;
+    Object.entries(validators!).forEach(([key, validators]) => {
+      if (validators) {
+        const errors = validators.reduce((acc, validator) => {
+          const validatorError = validator(formState.data[key as keyof FormStateData], data.password);
+          if (validatorError.length) {
+            validatorError.forEach(error => {
+              if(error.trim() !== '') acc = [...acc, error]
+            })
+          }
+          return acc;
+        }, [] as string[]);
+        if (errors.length) {
+          newErrors[key as keyof FormStateErrors] = errors;
+        }
       }
     });
-    setFormState((prevState) => ({
-      ...prevState,
+
+    setFormState({
+      ...formState,
       errors: newErrors,
-    }));
-    return Object.values(newErrors).every((errors) => errors.length === 0);
+    });
+
+    return false;
   };
 
   function handleSubmit(e: React.FormEvent) {

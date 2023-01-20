@@ -31,8 +31,6 @@ declare global {
     handleSubmit: (event: React.FormEvent) => void;
   }
 
-  type Validator = (value: string) => string[];
-
   type FormStateErrors = {
     firstName?: string[];
     lastName?: string[];
@@ -41,8 +39,19 @@ declare global {
     repeatPassword?: string[];
   };
 
+  type Validator = (value: string, password?: string) => string[];
+
+  type FormStateValidators = {
+    firstName?: Validator[];
+    lastName?: Validator[];
+    email?: Validator[];
+    password?: Validator[];
+    repeatPassword?: Validator[];
+  };
+
   interface FormState {
     data: FormStateData;
-    errors?: FormStateErrors;
+    errors: FormStateErrors;
+    validators?: FormStateValidators;
   }
 }
