@@ -7,11 +7,27 @@ import Login from "./routes/Login";
 import SignUp from "./routes/SignUp";
 import "./index.css";
 import FormProvider from "./components/Form/FormProvider";
+import AuthProvider from "./components/AuthProvider/AuthProvider";
+import AppointmentProvider from "./components/Appointment/AppointmentProvider";
+import NewAppointment from "./routes/NewAppointment";
+// import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <AppointmentProvider>
+        <App />
+      </AppointmentProvider>
+    ),
+  },
+  {
+    path: "/new/appointment",
+    element: (
+      <AppointmentProvider>
+        <NewAppointment />
+      </AppointmentProvider>
+    ),
   },
   {
     path: "/login",
@@ -35,7 +51,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>
 );
 

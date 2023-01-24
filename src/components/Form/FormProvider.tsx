@@ -1,4 +1,6 @@
+import { isEmpty } from "lodash";
 import React from "react";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 export const FormContext = React.createContext<FormContextType | null>(null);
 
@@ -20,6 +22,9 @@ export default function FormProvider({
     errors: {},
   });
 
+  const authContext = React.useContext(AuthContext)!;
+  const { register } = authContext;
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
     setFormState({
@@ -34,7 +39,6 @@ export default function FormProvider({
       },
     });
   }
-  // as keyof FormStateData]
 
   const validate = () => {
     const { data, validators } = formState;
@@ -42,11 +46,14 @@ export default function FormProvider({
     Object.entries(validators!).forEach(([key, validators]) => {
       if (validators) {
         const errors = validators.reduce((acc, validator) => {
-          const validatorError = validator(formState.data[key as keyof FormStateData], data.password);
+          const validatorError = validator(
+            formState.data[key as keyof FormStateData],
+            data.password
+          );
           if (validatorError.length) {
-            validatorError.forEach(error => {
-              if(error.trim() !== '') acc = [...acc, error]
-            })
+            validatorError.forEach((error) => {
+              if (error.trim() !== "") acc = [...acc, error];
+            });
           }
           return acc;
         }, [] as string[]);
@@ -55,6 +62,8 @@ export default function FormProvider({
         }
       }
     });
+
+    if (isEmpty(newErrors)) return true;
 
     setFormState({
       ...formState,
@@ -67,8 +76,10 @@ export default function FormProvider({
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (validate()) console.log(formState);
-    console.log("unvalidated");
+    if (validate()) {
+      register(formState.data);
+      document.location.href = "/";
+    }
   }
 
   return (

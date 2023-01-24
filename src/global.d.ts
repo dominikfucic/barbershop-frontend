@@ -54,4 +54,67 @@ declare global {
     errors: FormStateErrors;
     validators?: FormStateValidators;
   }
+
+  interface Service {
+    id: number;
+    name: string;
+    desc: string;
+    price: number;
+    duration: number;
+  }
+
+  interface Barber {
+    id: number;
+    firstName: string;
+    lastName: string;
+  }
+
+  interface Appointment {
+    service?: Service;
+    barber?: Barber;
+    startDateTime?: Date;
+    endDateTime?: Date;
+    valid?: boolean;
+  }
+
+  interface User {
+    id?: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password?: string;
+    repeatPassword?: string;
+  }
+
+  interface AuthContext {
+    login: () => void;
+    logout: () => void;
+    register: (user: User) => void;
+    user: User | null;
+  }
+
+  interface AppointmentContext {
+    appointment: Appointment | null;
+    setAppointment: React.Dispatch<React.SetStateAction<Appointment | null>>;
+  }
+
+  interface WizzardContext {
+    wizzardState: WizzardState;
+    setWizzardState: React.Dispatch<React.SetStateAction<WizzardState>>;
+    currentDate: Date;
+    currentStep: number;
+    services: Service[];
+    barbers: Barber[];
+  }
+
+  interface WizzardState {
+    currentDate: Date;
+    currentStep: number;
+  }
+
+  interface DayProps {
+    active?: boolean;
+    selected?: boolean;
+  }
 }
+

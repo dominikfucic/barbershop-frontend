@@ -1,16 +1,19 @@
-import { Navigate } from 'react-router-dom'
-import './App.css'
+import React from "react";
+import { Navigate } from "react-router-dom";
+import "./App.css";
+import { AppointmentContext } from "./components/Appointment/AppointmentProvider";
+import { AuthContext } from "./components/AuthProvider/AuthProvider";
+import Home from "./routes/Home";
 
 function App() {
-  let user = null
+  const { user } = React.useContext(AuthContext)!;
+  const { appointment } = React.useContext(AppointmentContext)!;
 
-  if (!user) return <Navigate to="/login" replace />
+  if (!user) return <Navigate to="/login" replace />;
 
-  return (
-    <h1>
-      Home Route
-    </h1>
-  )
+  if (!appointment?.valid) return <Navigate to="/new/appointment" replace />;
+
+  return <Home />;
 }
 
-export default App
+export default App;

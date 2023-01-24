@@ -1,5 +1,4 @@
-import { isEmpty } from "lodash";
-import React, { FormEvent } from "react";
+import React from "react";
 import {
   FormError,
   FormFieldInput,
@@ -12,7 +11,6 @@ import { FormContext } from "./FormProvider";
 export const FormField = (props: FormFieldProps) => {
   const formContext = React.useContext(FormContext)!;
   const { handleChange, formState, setFormState } = formContext;
-
   const { data, errors } = formState;
 
   React.useEffect(() => {
