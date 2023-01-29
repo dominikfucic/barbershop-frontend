@@ -1,6 +1,7 @@
 import { isEmpty } from "lodash";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { AuthContext } from "../AuthProvider/AuthProvider";
+import { useLocation } from "react-router-dom";
 
 export const FormContext = React.createContext<FormContextType | null>(null);
 
@@ -21,9 +22,19 @@ export default function FormProvider({
     },
     errors: {},
   });
-
   const authContext = React.useContext(AuthContext)!;
-  const { register } = authContext;
+  const { register, login } = authContext;
+
+  function usePrevious<T>(value: T): T | undefined {
+    const ref = useRef<T>();
+    useEffect(() => {
+      ref.current = value;
+    }, [value]);
+    return ref.current;
+  }
+
+  const location = useLocation();
+  const prevLocation = usePrevious(location);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { value, name } = event.target;
@@ -77,8 +88,23 @@ export default function FormProvider({
     e.preventDefault();
 
     if (validate()) {
-      register(formState.data);
-      document.location.href = "/";
+      if (prevLocation?.pathname === "/login") {
+        const user: User = {
+          email: formState.data.email,
+          password: formState.data.password,
+        };
+        login(user);
+      }
+      if (prevLocation?.pathname === "/signup") {
+        const user: User = {
+          email: formState.data.email,
+          password: formState.data.password,
+          firstName: formState.data.firstName,
+          lastName: formState.data.lastName,
+          role: 'client'
+        };
+        register(user);
+      }
     }
   }
 

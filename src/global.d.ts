@@ -79,18 +79,20 @@ declare global {
 
   interface User {
     id?: number;
-    firstName: string;
-    lastName: string;
+    firstName?: string;
+    lastName?: string;
     email: string;
     password?: string;
     repeatPassword?: string;
+    role?: string;
   }
 
   interface AuthContext {
-    login: () => void;
+    login: (user: User) => void;
     logout: () => void;
     register: (user: User) => void;
     user: User | null;
+    error: { message: string };
   }
 
   interface AppointmentContext {
@@ -117,4 +119,3 @@ declare global {
     selected?: boolean;
   }
 }
-

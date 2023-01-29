@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../components/AuthProvider/AuthProvider";
+import { Error } from "../components/Error";
 import Form, { FormField } from "../components/Form/Form";
 import {
   FormButton,
@@ -19,6 +21,8 @@ function SignUp() {
   const navigate = useNavigate();
   const formContext = React.useContext(FormContext)!;
   const { setFormState } = formContext;
+  const { error } = React.useContext(AuthContext)!;
+
 
   useEffect(() => {
     return () => {
@@ -40,6 +44,7 @@ function SignUp() {
   }, []);
   return (
     <Form>
+      {error && <Error>{error.message}</Error>}
       <FormTitle>Sign Up</FormTitle>
       <FormField
         type="text"
