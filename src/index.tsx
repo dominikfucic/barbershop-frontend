@@ -9,6 +9,7 @@ import FormProvider from "./components/Form/FormProvider";
 import AuthProvider from "./components/AuthProvider/AuthProvider";
 import AppointmentProvider from "./components/Appointment/AppointmentProvider";
 import NewAppointment from "./routes/NewAppointment";
+import Home from "./routes/Home";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +19,18 @@ const router = createBrowserRouter([
         <App />
       </AppointmentProvider>
     ),
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "new/appointment",
+        element: <NewAppointment />,
+      },
+    ],
   },
-  {
-    path: "/new/appointment",
-    element: (
-      <AppointmentProvider>
-        <NewAppointment />
-      </AppointmentProvider>
-    ),
-  },
+
   {
     path: "/login",
     element: (

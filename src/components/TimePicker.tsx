@@ -10,11 +10,10 @@ function TimePicker() {
   const [timeSlots, setTimeSlots] = React.useState<Date[]>([]);
 
   function handleShow() {
-    let dates = [] as Date[];
+    let dates: Date[] = [];
     for (let i = 0; i < 9; i++) {
-      let date = appointment!.startDateTime!;
+      let date = new Date();
       date.setHours(i + 8, 0, 0);
-
       dates.push(date);
     }
     setTimeSlots(dates);
@@ -39,7 +38,7 @@ function TimePicker() {
     setShowMenu(!showMenu);
   }
 
-  if(!appointment?.startDateTime) return null;
+  if (!appointment?.startDateTime) return null;
 
   return (
     <div className="flex items-center">

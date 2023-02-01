@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { AppointmentContext } from "../../Appointment/AppointmentProvider";
 import { Button } from "../../Button.styled";
 import { WizzardContext } from "../Wizzard";
@@ -12,7 +13,7 @@ function Step({
 }) {
   const { wizzardState, setWizzardState } = React.useContext(WizzardContext)!;
   const { currentStep } = wizzardState;
-
+  const navigate = useNavigate();
   const appointmentContext = React.useContext(AppointmentContext)!;
   const { appointment } = appointmentContext;
   const { barber, service, startDateTime, endDateTime } = appointment ?? {}
@@ -35,6 +36,7 @@ function Step({
   }, [service, barber, currentStep, startDateTime, endDateTime]);
 
   function next() {
+    if(currentStep === 4) return navigate('/')
     setWizzardState((state) => {
       return {
         ...state,

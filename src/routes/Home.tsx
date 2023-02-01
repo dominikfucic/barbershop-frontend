@@ -10,8 +10,11 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+
 function Home() {
   const { appointment } = React.useContext(AppointmentContext)!;
+
+  if(!appointment) return <Navigate to="new/appointment" replace/>
 
   return (
     <Wrapper>
