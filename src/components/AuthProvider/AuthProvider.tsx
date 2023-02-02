@@ -24,8 +24,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       .post("http://localhost:8000/api/users/login", user)
       .then((res) => {
         setUser(res.data);
-        localStorage.setItem("user", JSON.stringify(user));
-        document.location.href = "/";
+        localStorage.setItem("user", JSON.stringify(res.data));
       })
       .catch((err) => {
         if (err.response.status === 404) {
@@ -46,18 +45,17 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
   function register(user: User) {
     axios
-    .post("http://localhost:8000/api/users/signup", user)
-    .then((res) => {
-      setUser(res.data);
-      localStorage.setItem("user", JSON.stringify(user));
-      document.location.href = "/";
-    })
-    .catch((err) => {
-      if (err.response.status === 409) {
-        return setError(err.response.data);
-      }
-      console.error(err);
-    });
+      .post("http://localhost:8000/api/users/signup", user)
+      .then((res) => {
+        setUser(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          return setError(err.response.data);
+        }
+        console.error(err);
+      });
   }
 
   return (
