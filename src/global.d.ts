@@ -58,7 +58,7 @@ declare global {
   interface Service {
     id: number;
     name: string;
-    desc: string;
+    description: string;
     price: number;
     duration: number;
   }
@@ -81,7 +81,7 @@ declare global {
     id?: number;
     firstName?: string;
     lastName?: string;
-    email: string;
+    email?: string;
     password?: string;
     repeatPassword?: string;
     role?: string;
@@ -105,8 +105,6 @@ declare global {
     setWizzardState: React.Dispatch<React.SetStateAction<WizzardState>>;
     currentDate: Date;
     currentStep: number;
-    services: Service[];
-    barbers: Barber[];
   }
 
   interface WizzardState {

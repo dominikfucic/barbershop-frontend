@@ -18,38 +18,6 @@ function Wizzard({ children }: { children: React.ReactNode }) {
     currentStep: 1,
   });
 
-  const [services, setServices] = React.useState<Service[]>([
-    {
-      id: 1,
-      name: "Haircut",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at tincidunt mauris.",
-      price: 30,
-      duration: 45,
-    },
-    {
-      id: 2,
-      name: "Haircut",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at tincidunt mauris.",
-      price: 30,
-      duration: 45,
-    },
-    {
-      id: 3,
-      name: "Haircut",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at tincidunt mauris.",
-      price: 30,
-      duration: 45,
-    },
-  ]);
-
-  const [barbers, setBarbers] = React.useState<Barber[]>([
-    {
-      id: 1,
-      firstName: "Test",
-      lastName: "Barber",
-    },
-  ]);
-
   return (
     <Provider
       value={{
@@ -57,8 +25,6 @@ function Wizzard({ children }: { children: React.ReactNode }) {
         setWizzardState,
         currentDate: wizzardState.currentDate,
         currentStep: wizzardState.currentStep,
-        services,
-        barbers,
       }}
     >
       <Container>{children}</Container>
