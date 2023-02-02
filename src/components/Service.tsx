@@ -21,7 +21,7 @@ function Service({ service }: { service: Service }) {
     >
       <div className="text-lg pr-3 overflow-hidden">
         <h2 className="text-xl font-medium mb-2">{service.name}</h2>
-        <p>{service.desc}</p>
+        <p>{service.description}</p>
       </div>
       <div className="flex flex-col justify-evenly items-end font-bold whitespace-nowrap">
         <div>€ {service.price}</div>

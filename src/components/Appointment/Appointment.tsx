@@ -19,7 +19,7 @@ function Appointment({ data }: { data: Appointment }) {
           </tr>
           <tr>
             <th>Description</th>
-            <td>{service?.desc}</td>
+            <td>{service?.description}</td>
           </tr>
           <tr>
             <th>Price</th>
